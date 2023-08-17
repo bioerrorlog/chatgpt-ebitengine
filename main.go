@@ -9,7 +9,6 @@ import (
 const (
 	ScreenWidth  = 1920
 	ScreenHeight = 1080
-	boidCount    = 100
 )
 
 type Game struct{}
