@@ -1,3 +1,6 @@
+// Reference
+// https://github.com/hajimehoshi/ebiten/blob/main/examples/typewriter/main.go
+
 package main
 
 import (
