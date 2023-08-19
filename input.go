@@ -4,11 +4,13 @@
 package main
 
 import (
+	"image/color"
 	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
 	"github.com/hajimehoshi/ebiten/v2/inpututil"
+	"github.com/hajimehoshi/ebiten/v2/text"
+	"golang.org/x/image/font/basicfont"
 )
 
 type Input struct {
@@ -60,7 +62,8 @@ func (i *Input) Draw(screen *ebiten.Image) {
 	if i.counter%60 < 30 {
 		t += "_"
 	}
-	ebitenutil.DebugPrint(screen, t)
+
+	text.Draw(screen, i.text, basicfont.Face7x13, 20, 60, color.White)
 }
 
 // repeatingKeyPressed return true when key is pressed considering the repeat state.
