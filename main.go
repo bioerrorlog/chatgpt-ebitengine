@@ -1,49 +1,93 @@
 package main
 
 import (
-	"image/color"
 	"log"
+	"strings"
 
 	"github.com/hajimehoshi/ebiten/v2"
-	"github.com/hajimehoshi/ebiten/v2/text"
-	"golang.org/x/image/font/basicfont"
+	"github.com/hajimehoshi/ebiten/v2/ebitenutil"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 const (
-	ScreenWidth  = 1920
-	ScreenHeight = 1080
+	screenWidth  = 1920
+	screenHeight = 1080
 )
 
-type Game struct{}
+// repeatingKeyPressed return true when key is pressed considering the repeat state.
+func repeatingKeyPressed(key ebiten.Key) bool {
+	const (
+		delay    = 30
+		interval = 3
+	)
+	d := inpututil.KeyPressDuration(key)
+	if d == 1 {
+		return true
+	}
+	if d >= delay && (d-delay)%interval == 0 {
+		return true
+	}
+	return false
+}
 
-func NewGame() (*Game, error) {
-	g := &Game{}
-
-	return g, nil
+type Game struct {
+	runes   []rune
+	text    string
+	counter int
 }
 
 func (g *Game) Update() error {
+	// Add runes that are input by the user by AppendInputChars.
+	// Note that AppendInputChars result changes every frame, so you need to call this
+	// every frame.
+	g.runes = ebiten.AppendInputChars(g.runes[:0])
+	g.text += string(g.runes)
+
+	// Adjust the string to be at most 10 lines.
+	ss := strings.Split(g.text, "\n")
+	if len(ss) > 10 {
+		g.text = strings.Join(ss[len(ss)-10:], "\n")
+	}
+
+	// If the enter key is pressed, add a line break.
+	if repeatingKeyPressed(ebiten.KeyEnter) || repeatingKeyPressed(ebiten.KeyNumpadEnter) {
+		g.text += "\n"
+	}
+
+	// If the backspace key is pressed, remove one character.
+	if repeatingKeyPressed(ebiten.KeyBackspace) {
+		if len(g.text) >= 1 {
+			g.text = g.text[:len(g.text)-1]
+		}
+	}
+
+	g.counter++
 	return nil
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
-	msg := "Hello, Ebiten!"
-	text.Draw(screen, msg, basicfont.Face7x13, 20, 20, color.White)
+	// Blink the cursor.
+	t := g.text
+	if g.counter%60 < 30 {
+		t += "_"
+	}
+	ebitenutil.DebugPrint(screen, t)
 }
 
-func (g *Game) Layout(outsideWidth, outsideHeight int) (screenWidth, screenHeight int) {
-	return ScreenWidth, ScreenHeight
+func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
+	return screenWidth, screenHeight
 }
 
 func main() {
-	game, err := NewGame()
-	if err != nil {
-		log.Fatal(err)
+	g := &Game{
+		text:    "Type on the keyboard:\n",
+		counter: 0,
 	}
-	ebiten.SetWindowSize(ScreenWidth, ScreenHeight)
+
+	ebiten.SetWindowSize(screenWidth, screenHeight)
 	ebiten.SetFullscreen(true)
 	ebiten.SetWindowTitle("chatgpt")
-	if err := ebiten.RunGame(game); err != nil {
+	if err := ebiten.RunGame(g); err != nil {
 		log.Fatal(err)
 	}
 }
