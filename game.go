@@ -7,8 +7,8 @@ import (
 )
 
 const (
-	ScreenWidth  = 1920
-	ScreenHeight = 1080
+	ScreenWidth  = 640
+	ScreenHeight = 480
 )
 
 type Game struct {
