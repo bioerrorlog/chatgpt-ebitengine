@@ -9,6 +9,7 @@ import (
 type Button struct {
 	x, y          int
 	width, height int
+	color         color.RGBA
 	isClicked     bool
 }
 
@@ -18,6 +19,7 @@ func NewButton(x, y, width, height int) (*Button, error) {
 		y:      y,
 		width:  width,
 		height: height,
+		color:  color.RGBA{R: 168, G: 223, B: 142, A: 255},
 	}
 	return b, nil
 }
@@ -41,8 +43,7 @@ func (b *Button) Update() error {
 
 func (b *Button) Draw(screen *ebiten.Image) {
 	buttonImage := ebiten.NewImage(b.width, b.height)
-	buttonColor := color.NRGBA{R: 255, G: 0, B: 0, A: 255}
-	buttonImage.Fill(buttonColor)
+	buttonImage.Fill(b.color)
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(float64(b.x), float64(b.y))
 	screen.DrawImage(buttonImage, op)
