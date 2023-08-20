@@ -19,7 +19,7 @@ func NewButton(x, y, width, height int) (*Button, error) {
 		y:      y,
 		width:  width,
 		height: height,
-		color:  color.RGBA{R: 168, G: 223, B: 142, A: 255},
+		color:  color.RGBA{R: 171, G: 104, B: 255, A: 255},
 	}
 	return b, nil
 }
