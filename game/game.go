@@ -36,8 +36,12 @@ func NewGame() (*Game, error) {
 }
 
 func (g *Game) Update() error {
-	g.input.Update()
-	g.sendButton.Update()
+	if err := g.input.Update(); err != nil {
+		return err
+	}
+	if err := g.sendButton.Update(); err != nil {
+		return err
+	}
 
 	if g.sendButton.IsClicked() {
 		fmt.Println("Button was clicked!")
