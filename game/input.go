@@ -21,7 +21,7 @@ type Input struct {
 
 func NewInput() (*Input, error) {
 	i := &Input{
-		text:    "Type on the keyboard:\n",
+		text:    "",
 		counter: 0,
 	}
 	return i, nil
