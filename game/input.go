@@ -1,7 +1,7 @@
 // Reference
 // https://github.com/hajimehoshi/ebiten/blob/main/examples/typewriter/main.go
 
-package main
+package game
 
 import (
 	"image/color"
