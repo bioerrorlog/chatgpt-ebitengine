@@ -2,6 +2,7 @@ package game
 
 import (
 	"fmt"
+	"image/color"
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
@@ -13,8 +14,9 @@ const (
 )
 
 type Game struct {
-	input      *Input
-	sendButton *Button
+	input           *Input
+	sendButton      *Button
+	backgroundColor color.RGBA
 }
 
 func NewGame() (*Game, error) {
@@ -29,8 +31,9 @@ func NewGame() (*Game, error) {
 	}
 
 	g := &Game{
-		input:      i,
-		sendButton: b,
+		input:           i,
+		sendButton:      b,
+		backgroundColor: color.RGBA{53, 54, 65, 255},
 	}
 	return g, nil
 }
@@ -51,6 +54,9 @@ func (g *Game) Update() error {
 }
 
 func (g *Game) Draw(screen *ebiten.Image) {
+	// Background
+	screen.Fill(g.backgroundColor)
+
 	g.input.Draw(screen)
 	g.sendButton.Draw(screen)
 }
