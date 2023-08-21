@@ -16,6 +16,8 @@ const (
 type Game struct {
 	input           *Input
 	sendButton      *Button
+	gptResultChan   chan string
+	gptCalling      bool
 	backgroundColor color.RGBA
 }
 
@@ -33,6 +35,8 @@ func NewGame() (*Game, error) {
 	g := &Game{
 		input:           i,
 		sendButton:      b,
+		gptResultChan:   make(chan string),
+		gptCalling:      false,
 		backgroundColor: color.RGBA{53, 54, 65, 255},
 	}
 	return g, nil
@@ -48,6 +52,27 @@ func (g *Game) Update() error {
 
 	if g.sendButton.IsClicked() {
 		fmt.Println("Button was clicked!")
+	}
+
+	// Call GPT when the button pressed
+	if g.sendButton.IsClicked() && !g.gptCalling {
+		go func() {
+			fmt.Println("Call GPT")
+			result, err := CallGpt()
+			if err != nil {
+				log.Printf("Error calling GPT: %v", err)
+			}
+			g.gptResultChan <- result
+		}()
+		g.gptCalling = true
+	}
+
+	select {
+	case result := <-g.gptResultChan:
+		fmt.Println("Received:", result)
+		g.gptCalling = false
+	default:
+		// fmt.Println("Waiting for the response of GPT call")
 	}
 
 	return nil
