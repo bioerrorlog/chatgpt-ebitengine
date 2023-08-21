@@ -1,1 +1,1 @@
-# (WIP) chatgpt-ebitengine
+# chatgpt-ebitengine
