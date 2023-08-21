@@ -22,6 +22,7 @@ type Game struct {
 	gptResultChan   chan string
 	gptCalling      bool
 	backgroundColor color.RGBA
+	counter         int
 }
 
 func NewGame() (*Game, error) {
@@ -54,6 +55,7 @@ func (g *Game) Update() error {
 	}
 
 	if g.sendButton.IsClicked() {
+		// Debug
 		fmt.Println("Button was clicked!")
 	}
 
@@ -68,6 +70,8 @@ func (g *Game) Update() error {
 			g.gptResultChan <- result
 		}()
 		g.gptCalling = true
+		g.input.text = ""
+		g.output = ""
 	}
 	select {
 	case result := <-g.gptResultChan:
@@ -75,9 +79,21 @@ func (g *Game) Update() error {
 		g.output = result
 		g.gptCalling = false
 	default:
-		// fmt.Println("Waiting for the response of GPT call")
 	}
 
+	if g.gptCalling {
+		if g.counter%60 < 20 {
+			g.output = ""
+		} else if g.counter%80 < 40 {
+			g.output = " ."
+		} else if g.counter%80 < 60 {
+			g.output = " . ."
+		} else {
+			g.output = " . . ."
+		}
+	}
+
+	g.counter++
 	return nil
 }
 
