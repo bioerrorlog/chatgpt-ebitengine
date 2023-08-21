@@ -6,6 +6,8 @@ import (
 	"log"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text"
+	"golang.org/x/image/font/basicfont"
 )
 
 const (
@@ -15,6 +17,7 @@ const (
 
 type Game struct {
 	input           *Input
+	output          string
 	sendButton      *Button
 	gptResultChan   chan string
 	gptCalling      bool
@@ -66,10 +69,10 @@ func (g *Game) Update() error {
 		}()
 		g.gptCalling = true
 	}
-
 	select {
 	case result := <-g.gptResultChan:
 		fmt.Println("Received:", result)
+		g.output = result
 		g.gptCalling = false
 	default:
 		// fmt.Println("Waiting for the response of GPT call")
@@ -84,6 +87,9 @@ func (g *Game) Draw(screen *ebiten.Image) {
 
 	g.input.Draw(screen)
 	g.sendButton.Draw(screen)
+
+	// GPT response
+	text.Draw(screen, g.output, basicfont.Face7x13, 20, 240, color.White)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
