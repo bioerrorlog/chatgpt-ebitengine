@@ -4,22 +4,26 @@ import (
 	"image/color"
 
 	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/text"
+	"golang.org/x/image/font/basicfont"
 )
 
 type Button struct {
 	x, y          int
 	width, height int
 	color         color.RGBA
+	buttonText    string
 	isClicked     bool
 }
 
-func NewButton(x, y, width, height int) (*Button, error) {
+func NewButton(x, y, width, height int, buttonText string) (*Button, error) {
 	b := &Button{
-		x:      x,
-		y:      y,
-		width:  width,
-		height: height,
-		color:  color.RGBA{R: 171, G: 104, B: 255, A: 255},
+		x:          x,
+		y:          y,
+		width:      width,
+		height:     height,
+		buttonText: buttonText,
+		color:      color.RGBA{R: 171, G: 104, B: 255, A: 255},
 	}
 	return b, nil
 }
@@ -47,6 +51,11 @@ func (b *Button) Draw(screen *ebiten.Image) {
 	op := &ebiten.DrawImageOptions{}
 	op.GeoM.Translate(float64(b.x), float64(b.y))
 	screen.DrawImage(buttonImage, op)
+
+	// Draw the button text
+	textX := b.x + b.width/2 - 15
+	textY := b.y + b.height/2 + 5
+	text.Draw(screen, b.buttonText, basicfont.Face7x13, textX, textY, color.White)
 }
 
 func (b *Button) IsClicked() bool {
