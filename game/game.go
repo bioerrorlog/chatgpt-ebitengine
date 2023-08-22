@@ -32,7 +32,7 @@ func NewGame() (*Game, error) {
 		log.Fatal(err)
 	}
 
-	b, err := NewButton(500, 400, 100, 50)
+	b, err := NewButton(550, ScreenHeight/2-60, 50, 50)
 	if err != nil {
 		log.Fatal(err)
 	}
