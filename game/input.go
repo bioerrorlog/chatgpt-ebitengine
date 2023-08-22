@@ -56,14 +56,14 @@ func (i *Input) Update() error {
 	return nil
 }
 
-func (i *Input) Draw(screen *ebiten.Image) {
+func (i *Input) Draw(screen *ebiten.Image, x, y int) {
 	// Blink the cursor.
 	t := i.text
 	if i.counter%60 < 30 {
 		t += "_"
 	}
 
-	text.Draw(screen, t, basicfont.Face7x13, 20, 60, color.White)
+	text.Draw(screen, t, basicfont.Face7x13, x, y, color.White)
 }
 
 // repeatingKeyPressed return true when key is pressed considering the repeat state.

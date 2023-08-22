@@ -110,7 +110,7 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	op.GeoM.Translate(0, float64(ScreenHeight)/2)
 	screen.DrawImage(lowerHalfImage, op)
 
-	g.input.Draw(screen)
+	g.input.Draw(screen, 20, 60)
 	g.sendButton.Draw(screen)
 
 	// GPT response
