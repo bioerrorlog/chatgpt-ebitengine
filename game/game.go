@@ -110,11 +110,11 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	op.GeoM.Translate(0, float64(ScreenHeight)/2)
 	screen.DrawImage(lowerHalfImage, op)
 
-	g.input.Draw(screen, 20, 60)
+	g.input.Draw(screen, 80, 60)
 	g.sendButton.Draw(screen)
 
 	// GPT response
-	text.Draw(screen, g.output, basicfont.Face7x13, 20, ScreenHeight/2+60, color.White)
+	text.Draw(screen, g.output, basicfont.Face7x13, 80, ScreenHeight/2+60, color.White)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
