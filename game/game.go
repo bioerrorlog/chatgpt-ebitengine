@@ -83,6 +83,7 @@ func (g *Game) Update() error {
 	default:
 	}
 
+	// Loading texts...
 	if g.gptCalling {
 		if g.counter%60 < 20 {
 			g.output = ""
