@@ -64,7 +64,3 @@ func (b *Button) Draw(screen *ebiten.Image) {
 	textY := b.y + b.height/2 + 5
 	text.Draw(screen, b.buttonText, basicfont.Face7x13, textX, textY, color.White)
 }
-
-func (b *Button) IsClicked() bool {
-	return b.isClicked
-}

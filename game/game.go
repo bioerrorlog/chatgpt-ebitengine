@@ -56,13 +56,13 @@ func (g *Game) Update() error {
 		return err
 	}
 
-	if g.sendButton.IsClicked() {
+	if g.sendButton.isClicked {
 		// Debug
 		fmt.Println("Button was clicked!")
 	}
 
 	// Call GPT when the button pressed
-	if g.sendButton.IsClicked() && !g.gptCalling {
+	if g.sendButton.isClicked && !g.gptCalling {
 		go func() {
 			fmt.Println("Call GPT")
 			result, err := CallGpt()
