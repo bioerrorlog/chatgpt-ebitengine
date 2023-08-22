@@ -16,13 +16,14 @@ const (
 )
 
 type Game struct {
-	input           *Input
-	output          string
-	sendButton      *Button
-	gptResultChan   chan string
-	gptCalling      bool
-	backgroundColor color.RGBA
-	counter         int
+	input              *Input
+	output             string
+	sendButton         *Button
+	gptResultChan      chan string
+	gptCalling         bool
+	backgroundColor    color.RGBA
+	backgroundColor2nd color.RGBA
+	counter            int
 }
 
 func NewGame() (*Game, error) {
@@ -37,11 +38,12 @@ func NewGame() (*Game, error) {
 	}
 
 	g := &Game{
-		input:           i,
-		sendButton:      b,
-		gptResultChan:   make(chan string),
-		gptCalling:      false,
-		backgroundColor: color.RGBA{53, 54, 65, 255},
+		input:              i,
+		sendButton:         b,
+		gptResultChan:      make(chan string),
+		gptCalling:         false,
+		backgroundColor:    color.RGBA{53, 54, 65, 255},
+		backgroundColor2nd: color.RGBA{68, 70, 84, 255},
 	}
 	return g, nil
 }
@@ -101,11 +103,18 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	// Background
 	screen.Fill(g.backgroundColor)
 
+	// Background for the lower half
+	lowerHalfImage := ebiten.NewImage(ScreenWidth, ScreenHeight/2)
+	lowerHalfImage.Fill(g.backgroundColor2nd)
+	op := &ebiten.DrawImageOptions{}
+	op.GeoM.Translate(0, float64(ScreenHeight)/2)
+	screen.DrawImage(lowerHalfImage, op)
+
 	g.input.Draw(screen)
 	g.sendButton.Draw(screen)
 
 	// GPT response
-	text.Draw(screen, g.output, basicfont.Face7x13, 20, 240, color.White)
+	text.Draw(screen, g.output, basicfont.Face7x13, 20, ScreenHeight/2+60, color.White)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
