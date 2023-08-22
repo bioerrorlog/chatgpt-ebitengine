@@ -7,7 +7,7 @@ import (
 	openai "github.com/sashabaranov/go-openai"
 )
 
-func CallGpt() (string, error) {
+func CallGpt(message string) (string, error) {
 	client := openai.NewClient("your token")
 	resp, err := client.CreateChatCompletion(
 		context.Background(),
@@ -16,7 +16,7 @@ func CallGpt() (string, error) {
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    openai.ChatMessageRoleUser,
-					Content: "Hello!",
+					Content: message,
 				},
 			},
 		},

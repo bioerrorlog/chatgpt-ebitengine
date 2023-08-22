@@ -60,14 +60,14 @@ func (g *Game) Update() error {
 	if g.sendButton.isClicked && !g.gptCalling {
 		go func() {
 			fmt.Println("Call GPT")
-			result, err := CallGpt()
+			fmt.Println(g.input.text)
+			result, err := CallGpt(g.input.text)
 			if err != nil {
 				log.Printf("Error calling GPT: %v", err)
 			}
 			g.gptResultChan <- result
 		}()
 		g.gptCalling = true
-		g.input.text = ""
 		g.output = ""
 	}
 	select {
