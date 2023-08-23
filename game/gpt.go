@@ -3,12 +3,18 @@ package game
 import (
 	"context"
 	"fmt"
+	"os"
 
 	openai "github.com/sashabaranov/go-openai"
 )
 
 func CallGpt(message string) (string, error) {
-	client := openai.NewClient("your token")
+	apikey := os.Getenv("OPENAI_API_KEY")
+	if apikey == "" {
+		return "", fmt.Errorf("OPENAI_API_KEY environment variable not set")
+	}
+
+	client := openai.NewClient(apikey)
 	resp, err := client.CreateChatCompletion(
 		context.Background(),
 		openai.ChatCompletionRequest{
@@ -21,7 +27,6 @@ func CallGpt(message string) (string, error) {
 			},
 		},
 	)
-
 	if err != nil {
 		fmt.Printf("ChatCompletion error: %v\n", err)
 		return "", err
