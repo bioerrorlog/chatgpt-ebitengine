@@ -20,6 +20,8 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y libasound2-dev libgl1-mesa-dev libxcursor-dev libxi-dev libxinerama-dev libxrandr-dev libxxf86vm-dev xvfb
+          Xvfb :99 &
+          echo "DISPLAY=:99.0" >> $GITHUB_ENV
 
       - name: Run golangci-lint
         uses: golangci/golangci-lint-action@v3
