@@ -117,14 +117,3 @@ func (g *Game) Draw(screen *ebiten.Image) {
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return ScreenWidth, ScreenHeight
 }
-
-func insertLineBreaks(input string, charsPerLine int) string {
-	processedOutput := ""
-	for i, runeValue := range input {
-		if i > 0 && i%charsPerLine == 0 {
-			processedOutput += "\n"
-		}
-		processedOutput += string(runeValue)
-	}
-	return processedOutput
-}
