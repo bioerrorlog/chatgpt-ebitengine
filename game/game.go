@@ -11,8 +11,9 @@ import (
 )
 
 const (
-	ScreenWidth  = 640
-	ScreenHeight = 480
+	ScreenWidth     = 640
+	ScreenHeight    = 480
+	maxCharsPerLine = 70
 )
 
 type Game struct {
@@ -110,9 +111,20 @@ func (g *Game) Draw(screen *ebiten.Image) {
 	g.sendButton.Draw(screen)
 
 	// GPT response
-	text.Draw(screen, g.output, basicfont.Face7x13, 80, ScreenHeight/2+60, color.White)
+	text.Draw(screen, insertLineBreaks(g.output, maxCharsPerLine), basicfont.Face7x13, 80, ScreenHeight/2+60, color.White)
 }
 
 func (g *Game) Layout(outsideWidth, outsideHeight int) (int, int) {
 	return ScreenWidth, ScreenHeight
+}
+
+func insertLineBreaks(input string, charsPerLine int) string {
+	processedOutput := ""
+	for i, runeValue := range input {
+		if i > 0 && i%charsPerLine == 0 {
+			processedOutput += "\n"
+		}
+		processedOutput += string(runeValue)
+	}
+	return processedOutput
 }
