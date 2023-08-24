@@ -81,7 +81,7 @@ func (g *Game) Update() error {
 
 	// Loading texts...
 	if g.gptCalling {
-		if g.counter%60 < 20 {
+		if g.counter%80 < 20 {
 			g.output = ""
 		} else if g.counter%80 < 40 {
 			g.output = " ."
