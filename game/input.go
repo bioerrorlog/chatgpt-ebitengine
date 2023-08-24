@@ -63,7 +63,7 @@ func (i *Input) Draw(screen *ebiten.Image, x, y int) {
 		t += "_"
 	}
 
-	text.Draw(screen, t, basicfont.Face7x13, x, y, color.White)
+	text.Draw(screen, insertLineBreaks(t, maxCharsPerLine), basicfont.Face7x13, x, y, color.White)
 }
 
 // repeatingKeyPressed return true when key is pressed considering the repeat state.
