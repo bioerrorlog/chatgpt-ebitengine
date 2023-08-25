@@ -4,6 +4,8 @@
 
 Call GPT in [Ebitengine](https://ebitengine.org/).
 
+![demo](screenshots/demo.gif)
+
 ## Run on your local machine
 
 ```sh
